@@ -34,11 +34,13 @@ struct ErrorView: View {
                 .font(.system(size: 10))
                 .multilineTextAlignment(.center)
 
-            Button(action: {}
-                   , label: {
-                    Text("Retry")
-                   })
-                .padding(10)
+            Button(action: {
+                self.handler()
+            }
+            , label: {
+                Text("Retry")
+            })
+            .padding(10)
         }
     }
 }

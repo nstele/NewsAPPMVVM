@@ -18,7 +18,9 @@ struct NewsServiceImpl: NewsService {
             .shared
             .dataTaskPublisher(for: endpoint.urlRequest)
             .receive(on: DispatchQueue.main)
-            .mapError { _ in APIError.unknown }
+            .mapError { error in
+                APIError.errorCode(error.errorCode)
+            }
             .flatMap { data, response -> AnyPublisher<NewsResponse, APIError> in
                 guard let response = response as? HTTPURLResponse else {
                     return Fail(error: APIError.unknown).eraseToAnyPublisher()
