@@ -15,20 +15,18 @@ struct ArticleView: View {
     var body: some View {
         HStack {
             if let imageURL = article.image, let url = URL(string: imageURL) {
-                URLImage(url) { _ in
-                    // This view is displayed before download starts
-                    EmptyView()
-                } failure: { error, retry in
-                    // Display error and retry button
-                    PlaceholderImageView()
-                } content: { image in
-                    // Downloaded image
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
+                if #available(iOS 15.0, *) {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+
+                    } placeholder: {
+                        PlaceholderImageView()
+                    }
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(10)
                 }
-                .frame(width: 100, height: 100)
-                .cornerRadius(10)
             } else {
                 PlaceholderImageView()
             }
